@@ -63,7 +63,7 @@ diststyle all;
 CREATE TABLE nation_sp (
   N_NATIONKEY bigint NOT NULL PRIMARY KEY,
   N_NAME varchar(25),
-  N_REGIONKEY bigint REFERENCES region(R_REGIONKEY),
+  N_REGIONKEY bigint REFERENCES region_sp(R_REGIONKEY),
   N_COMMENT varchar(152))
 diststyle all;
 
@@ -71,7 +71,7 @@ create table customer_sp (
   C_CUSTKEY bigint NOT NULL PRIMARY KEY,
   C_NAME varchar(25),
   C_ADDRESS varchar(40),
-  C_NATIONKEY bigint REFERENCES nation(N_NATIONKEY),
+  C_NATIONKEY bigint REFERENCES nation_sp(N_NATIONKEY),
   C_PHONE varchar(15),
   C_ACCTBAL decimal(18,4),
   C_MKTSEGMENT varchar(10),
@@ -80,7 +80,7 @@ diststyle all;
 
 create table orders_sp (
   O_ORDERKEY bigint NOT NULL PRIMARY KEY,
-  O_CUSTKEY bigint REFERENCES customer(C_CUSTKEY),
+  O_CUSTKEY bigint REFERENCES customer_sp(C_CUSTKEY),
   O_ORDERSTATUS varchar(1),
   O_TOTALPRICE decimal(18,4),
   O_ORDERDATE Date,
@@ -107,16 +107,16 @@ create table supplier_sp (
   S_SUPPKEY bigint NOT NULL PRIMARY KEY,
   S_NAME varchar(25),
   S_ADDRESS varchar(40),
-  S_NATIONKEY bigint REFERENCES nation(n_nationkey),
+  S_NATIONKEY bigint REFERENCES nation_sp(n_nationkey),
   S_PHONE varchar(15),
   S_ACCTBAL decimal(18,4),
   S_COMMENT varchar(101))
 diststyle all;                                                              
 
 create table lineitem_sp (
-  L_ORDERKEY bigint NOT NULL REFERENCES orders(O_ORDERKEY),
-  L_PARTKEY bigint REFERENCES part(P_PARTKEY),
-  L_SUPPKEY bigint REFERENCES supplier(S_SUPPKEY),
+  L_ORDERKEY bigint NOT NULL REFERENCES orders_sp(O_ORDERKEY),
+  L_PARTKEY bigint REFERENCES part_sp(P_PARTKEY),
+  L_SUPPKEY bigint REFERENCES supplier_sp(S_SUPPKEY),
   L_LINENUMBER integer NOT NULL,
   L_QUANTITY decimal(18,4),
   L_EXTENDEDPRICE decimal(18,4),
@@ -135,8 +135,8 @@ distkey (L_ORDERKEY)
 sortkey (L_RECEIPTDATE);
 
 create table partsupp_sp (
-  PS_PARTKEY bigint NOT NULL REFERENCES part(P_PARTKEY),
-  PS_SUPPKEY bigint NOT NULL REFERENCES supplier(S_SUPPKEY),
+  PS_PARTKEY bigint NOT NULL REFERENCES part_sp(P_PARTKEY),
+  PS_SUPPKEY bigint NOT NULL REFERENCES supplier_sp(S_SUPPKEY),
   PS_AVAILQTY integer,
   PS_SUPPLYCOST decimal(18,4),
   PS_COMMENT varchar(199),
